@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 public class DictionaryCommandline {
 
@@ -9,11 +10,38 @@ public class DictionaryCommandline {
             System.out.println('\t'+"| "+dictionary.list[i].getWord_target()+'\t'+'\t'+"| "+dictionary.list[i].getWord_explain());
         }
     }
+    public static void menu() {
+        System.out.println("-------------------");
+        System.out.println("1. Them tu");
+        System.out.println("2. Xoa tu");
+        System.out.println("3. In tu");
+        System.out.println("4. Ket thuc");
+        System.out.println("-------------------");
+    }
     public static void dictionaryBasic(Dictionary dictionary) throws IOException {
+        Scanner input = new Scanner(System.in);
         DictionaryManagement dm = new DictionaryManagement();
         //dm.insertFromCommandline(dictionary);
         dm.insertFromFile(dictionary);
-        showAllWords(dictionary);
+        //chay menu
+
+        int choice = 1;
+
+        while (choice != 0) {
+            menu();
+            choice = input.nextInt();
+            if (choice == 1) {
+                //dm.insertFromCommandLine(dictionary);
+            } else if (choice == 2) {
+                System.out.println("Xoa tu");
+            } else if (choice == 3) {
+                showAllWords(dictionary);
+            } else {
+                break;
+            }
+            System.out.println("\n \nBan muon lam gi tiep ?");
+            //choice = input.nextInt();
+        }
     }
 
     public static void main(String[] args) throws IOException {

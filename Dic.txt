@@ -1,7 +1,4 @@
 3
-hello 
-xin chao
-housee
-ngoi nha
-window
-cua so
+hello  xin chao
+house ngoi nha
+window cua so
