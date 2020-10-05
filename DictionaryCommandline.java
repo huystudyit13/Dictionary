@@ -5,9 +5,10 @@ public class DictionaryCommandline {
 
     public static void showAllWords(Dictionary dictionary) {
         System.out.println("No" + '\t'  + "| English" +'\t'+'\t'+"| Vietnamese");
-        for(int i = 0;i < dictionary.number ;i++) {
+        for(int i = 0;i < dictionary.getNumber() ;i++) {
             System.out.print(i+1);
             System.out.println('\t'+"| "+dictionary.list[i].getWord_target()+'\t'+'\t'+"| "+dictionary.list[i].getWord_explain());
+            //System.out.println(dictionary.list[i].getWord_explain());
         }
     }
     public static void menu() {
@@ -21,19 +22,19 @@ public class DictionaryCommandline {
     public static void dictionaryBasic(Dictionary dictionary) throws IOException {
         Scanner input = new Scanner(System.in);
         DictionaryManagement dm = new DictionaryManagement();
-        //dm.insertFromCommandline(dictionary);
         dm.insertFromFile(dictionary);
         //chay menu
 
         int choice = 1;
 
-        while (choice != 0) {
+        while ( choice != 0 ) {
             menu();
             choice = input.nextInt();
             if (choice == 1) {
-                //dm.insertFromCommandLine(dictionary);
+                dm.insertFromCommandline(dictionary);
             } else if (choice == 2) {
-                System.out.println("Xoa tu");
+                //System.out.println("Xoa tu");
+                dm.deleteWord(dictionary);
             } else if (choice == 3) {
                 showAllWords(dictionary);
             } else {

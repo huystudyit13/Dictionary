@@ -1,4 +1,4 @@
 3
-hello  xin chao
+hello xin chao
 house ngoi nha
-window cua so
+window cua so		
