@@ -12,6 +12,7 @@ public class Dictionary {
         list[number] = new Word(n,m);
         number++;
     }
+
     public int getNumber() {
         return this.number;
     }

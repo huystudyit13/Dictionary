@@ -1,6 +1,5 @@
 
-import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.Scanner;
 
 public class DictionaryManagement {
@@ -8,32 +7,38 @@ public class DictionaryManagement {
     public DictionaryManagement() {
     }
     public static void insertFromFile(Dictionary dictionary) throws IOException {
-        Scanner input = new Scanner(Paths.get("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt"),"UTF-8");
-        int number = input.nextInt();
-        //dictionary.newDictionary(number);
-        input.nextLine();
-        tempNumber += number;
-        for (int i = 0; i < number; i++) {
-            String word = input.next();
-            String mean = input.nextLine();
-            dictionary.addWord(word,mean);
+        FileReader fr = new FileReader("D:\\Code big project\\Dictionary\\Dic.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String line = "";
+        while ((line = br.readLine()) != null){
+            String[] word = line.split("\t");
+            dictionary.addWord(word[0],word[1]);
         }
-        input.close();
+        br.close();
     }
-    public void insertFromCommandline(Dictionary dictionary) {
+
+    public void insertFromCommandline(Dictionary dictionary) throws IOException {
         Scanner sc = new Scanner(System.in);
+        FileWriter fw = new FileWriter("D:\\Code big project\\Dictionary\\Dic.txt");
+        BufferedWriter bw = new BufferedWriter(fw);
         System.out.println("Ban muon them bao nhieu tu ?");
         int number = sc.nextInt();
-        number += tempNumber;
-        //dictionary.newDictionary(number);
         sc.nextLine();
-        for(int i = tempNumber;i < number ;i++) {
+        // them tu vao list
+        for(int i = 0 ;i < number ;i++) {
             String word = sc.nextLine();
             String mean = sc.nextLine();
             dictionary.addWord(word,mean);
         }
+        //add tat ca cac tu vao file
+        for(int i = 0;i < dictionary.getNumber() ;i++) {
+            bw.write(dictionary.list[i].getWord_target() + "\t" + dictionary.list[i].getWord_explain());
+            bw.newLine();
+        }
+        bw.flush();
+        bw.close();
     }
-    public void deleteWord(Dictionary dictionary) {
+    /*public void deleteWord(Dictionary dictionary) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Nhap tu ban muon xoa :");
         String word = sc.nextLine();
@@ -55,6 +60,11 @@ public class DictionaryManagement {
             dictionary.deleteWord(count);
         }
     }
+    public void deleteWord(Dictionary dictionary) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap tu ban muon xoa :");
+        String word = sc.nextLine();
+    }*/
 
 
 }

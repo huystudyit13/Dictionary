@@ -7,22 +7,24 @@ public class DictionaryCommandline {
         System.out.println("No" + '\t'  + "| English" +'\t'+'\t'+"| Vietnamese");
         for(int i = 0;i < dictionary.getNumber() ;i++) {
             System.out.print(i+1);
-            System.out.println('\t'+"| "+dictionary.list[i].getWord_target()+'\t'+'\t'+"| "+dictionary.list[i].getWord_explain());
+            System.out.println('\t'+"| "+dictionary.list[i].getWord_target()+'\t'+'\t'+"| "+ dictionary.list[i].getWord_explain());
             //System.out.println(dictionary.list[i].getWord_explain());
         }
     }
     public static void menu() {
         System.out.println("-------------------");
-        System.out.println("1. Them tu");
-        System.out.println("2. Xoa tu");
-        System.out.println("3. In tu");
-        System.out.println("4. Ket thuc");
+        System.out.println("1. Dịch từ");
+        System.out.println("2. Thêm từ");
+        System.out.println("3. Xoa tu");
+        System.out.println("4. In tu");
+        System.out.println("5. Ket thuc");
         System.out.println("-------------------");
     }
     public static void dictionaryBasic(Dictionary dictionary) throws IOException {
         Scanner input = new Scanner(System.in);
         DictionaryManagement dm = new DictionaryManagement();
         dm.insertFromFile(dictionary);
+
         //chay menu
 
         int choice = 1;
@@ -31,11 +33,13 @@ public class DictionaryCommandline {
             menu();
             choice = input.nextInt();
             if (choice == 1) {
-                dm.insertFromCommandline(dictionary);
+                System.out.println("Dich tu");
             } else if (choice == 2) {
-                //System.out.println("Xoa tu");
-                dm.deleteWord(dictionary);
+                dm.insertFromCommandline(dictionary);
             } else if (choice == 3) {
+                System.out.println("Xoa tu");
+                //dm.deleteWord(dictionary);
+            } else if (choice == 4) {
                 showAllWords(dictionary);
             } else {
                 break;

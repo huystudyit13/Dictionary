@@ -1,4 +1,5 @@
-3
-hello xin chao
-house ngoi nha
-window cua so		
+hello	xin chao
+house	ngoi nha
+window	cua so
+hi	xin chao
+pen	but
