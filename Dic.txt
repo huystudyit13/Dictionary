@@ -3,3 +3,4 @@ house	ngoi nha
 window	cua so
 hi	xin chao
 pen	but
+pencil but chi	but chi

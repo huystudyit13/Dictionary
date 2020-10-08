@@ -3,23 +3,26 @@ import java.io.*;
 import java.util.Scanner;
 
 public class DictionaryManagement {
-    static int tempNumber = 0;
+    public static Dictionary dictionary = new Dictionary();
+    public static Scanner sc = new Scanner(System.in);;
+
     public DictionaryManagement() {
     }
-    public static void insertFromFile(Dictionary dictionary) throws IOException {
-        FileReader fr = new FileReader("D:\\Code big project\\Dictionary\\Dic.txt");
+
+    public static void insertFromFile() throws IOException {
+        FileReader fr = new FileReader("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt");
         BufferedReader br = new BufferedReader(fr);
         String line = "";
         while ((line = br.readLine()) != null){
             String[] word = line.split("\t");
-            dictionary.addWord(word[0],word[1]);
+            Word addword = new Word(word[0],word[1]);
+            dictionary.list.add(addword);
         }
         br.close();
     }
 
-    public void insertFromCommandline(Dictionary dictionary) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        FileWriter fw = new FileWriter("D:\\Code big project\\Dictionary\\Dic.txt");
+    public void insertFromCommandline() throws IOException {
+        FileWriter fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt");
         BufferedWriter bw = new BufferedWriter(fw);
         System.out.println("Ban muon them bao nhieu tu ?");
         int number = sc.nextInt();
@@ -28,43 +31,20 @@ public class DictionaryManagement {
         for(int i = 0 ;i < number ;i++) {
             String word = sc.nextLine();
             String mean = sc.nextLine();
-            dictionary.addWord(word,mean);
+            Word newword = new Word(word,mean);
+            dictionary.list.add(newword);
         }
         //add tat ca cac tu vao file
-        for(int i = 0;i < dictionary.getNumber() ;i++) {
-            bw.write(dictionary.list[i].getWord_target() + "\t" + dictionary.list[i].getWord_explain());
+        for(int i = 0;i < dictionary.list.size() ;i++) {
+            bw.write(dictionary.list.get(i).getWord_target() + "\t" + dictionary.list.get(i).getWord_explain());
             bw.newLine();
         }
         bw.flush();
         bw.close();
     }
-    /*public void deleteWord(Dictionary dictionary) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Nhap tu ban muon xoa :");
-        String word = sc.nextLine();
-        int count = -1;
-        for(int i = 0;i < dictionary.getNumber() ;i++) {
-            if( word.equals(dictionary.list[i].getWord_explain()) ) {
-                count = i;
-                break;
-            }
-            else if( word.equals(dictionary.list[i].getWord_target()) ) {
-                count = i;
-                break;
-            }
-        }
-        if (count == -1) {
-            System.out.println("Word not found!");
-        }
-        else {
-            dictionary.deleteWord(count);
-        }
-    }
-    public void deleteWord(Dictionary dictionary) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Nhap tu ban muon xoa :");
-        String word = sc.nextLine();
-    }*/
 
+    /*public void deleteWord() {
+
+    }*/
 
 }

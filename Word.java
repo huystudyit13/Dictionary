@@ -15,6 +15,7 @@ public class Word {
     public void setWord_explain(String n) {
         this.word_explain = n;
     }
+
     public Word(String n, String m) {
         this.word_explain = m;
         this.word_target = n;
