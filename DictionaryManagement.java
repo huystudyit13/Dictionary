@@ -1,10 +1,11 @@
-
+import java.util.Map;
 import java.io.*;
 import java.util.Scanner;
 
 public class DictionaryManagement {
     public static Dictionary dictionary = new Dictionary();
-    public static Scanner sc = new Scanner(System.in);;
+    public static Scanner sc = new Scanner(System.in);
+
 
     public DictionaryManagement() {
     }
@@ -16,12 +17,12 @@ public class DictionaryManagement {
         while ((line = br.readLine()) != null){
             String[] word = line.split("\t");
             Word addword = new Word(word[0],word[1]);
-            dictionary.list.add(addword);
+            dictionary.list.put(word[0], addword);
         }
         br.close();
     }
 
-    public void insertFromCommandline() throws IOException {
+    public static void insertFromCommandline() throws IOException {
         FileWriter fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt");
         BufferedWriter bw = new BufferedWriter(fw);
         System.out.println("Ban muon them bao nhieu tu ?");
@@ -32,19 +33,43 @@ public class DictionaryManagement {
             String word = sc.nextLine();
             String mean = sc.nextLine();
             Word newword = new Word(word,mean);
-            dictionary.list.add(newword);
+            dictionary.list.put(word, newword);
+
         }
         //add tat ca cac tu vao file
-        for(int i = 0;i < dictionary.list.size() ;i++) {
-            bw.write(dictionary.list.get(i).getWord_target() + "\t" + dictionary.list.get(i).getWord_explain());
+        for (Map.Entry<String, Word> entry : dictionary.list.entrySet()) {
+            bw.write(entry.getKey() + "\t" + entry.getValue().getWord_explain());
             bw.newLine();
         }
         bw.flush();
         bw.close();
     }
 
-    /*public void deleteWord() {
+    public void deleteWord() {
+        System.out.println("Nhap tu Tieng Anh ban muon xoa:");
+        sc.nextLine();
+        String word = sc.nextLine();
+        if ( dictionary.list.containsKey(word) ) {
+            dictionary.list.remove(word);
+        }
+        else {
+            System.out.println("Not found!");
+        }
 
-    }*/
+    }
+
+    public void dictionaryLookup() {
+        System.out.println("Nhap tu Tieng Anh ban muon tim:");
+        sc.nextLine();
+        String word = sc.nextLine();
+        if ( dictionary.list.containsKey(word) ) {
+            System.out.println(dictionary.list.get(word).getWord_explain());
+        }
+        else {
+            System.out.println("Not found!");
+        }
+    }
+
+    
 
 }

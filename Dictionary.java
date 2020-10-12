@@ -1,7 +1,6 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 public class Dictionary {
-    ArrayList<Word> list = new ArrayList<Word>();
-    
+    HashMap<String, Word> list = new HashMap<String, Word>();
     public Dictionary() {
     }
 }

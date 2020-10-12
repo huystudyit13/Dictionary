@@ -1,6 +1,8 @@
-hello	xin chao
-house	ngoi nha
-window	cua so
 hi	xin chao
-pen	but
 pencil but chi	but chi
+school	truong hoc
+pen	but
+run	chay
+window	cua so
+house	ngoi nha
+hello	xin chao
