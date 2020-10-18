@@ -8,7 +8,7 @@ public class DictionaryCommandline extends DictionaryManagement {
         int n = 1;
         for (Map.Entry<String, Word> entry : dictionary.list.entrySet()) {
             System.out.print(n);
-            System.out.println('\t'+"| "+ entry.getKey()+'\t'+'\t'+"| "+ entry.getValue().getWord_explain());
+            System.out.println('\t' + "| " + entry.getKey() + '\t' + '\t' + "| " + entry.getValue().getWord_explain());
             n++;
         }
     }

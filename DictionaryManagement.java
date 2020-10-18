@@ -5,14 +5,29 @@ import java.util.Scanner;
 public class DictionaryManagement {
     public static Dictionary dictionary = new Dictionary();
     public static Scanner sc = new Scanner(System.in);
-
+    public static FileReader fr;
+    public static BufferedReader br;
+    public static FileWriter fw;
+    public static BufferedWriter bw;
+    private static final String file_name = "D:\\Code big project\\Dictionary\\src\\Dic.txt";
 
     public DictionaryManagement() {
     }
+    public static void dictionaryExportToFile() throws IOException {
+        fw = new FileWriter(file_name);
+        bw = new BufferedWriter(fw);
+        //add tat ca cac tu vao file
+        for (Map.Entry<String, Word> entry : dictionary.list.entrySet()) {
+            bw.write(entry.getKey() + "\t" + entry.getValue().getWord_explain());
+            bw.newLine();
+        }
+        bw.flush();
+        bw.close();
 
+    }
     public static void insertFromFile() throws IOException {
-        FileReader fr = new FileReader("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt");
-        BufferedReader br = new BufferedReader(fr);
+        fr = new FileReader(file_name);
+        br = new BufferedReader(fr);
         String line = "";
         while ((line = br.readLine()) != null){
             String[] word = line.split("\t");
@@ -23,8 +38,8 @@ public class DictionaryManagement {
     }
 
     public static void insertFromCommandline() throws IOException {
-        FileWriter fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\Dictionary\\src\\Dic.txt");
-        BufferedWriter bw = new BufferedWriter(fw);
+        fw = new FileWriter(file_name);
+        bw = new BufferedWriter(fw);
         System.out.println("Ban muon them bao nhieu tu ?");
         int number = sc.nextInt();
         sc.nextLine();
@@ -34,18 +49,14 @@ public class DictionaryManagement {
             String mean = sc.nextLine();
             Word newword = new Word(word,mean);
             dictionary.list.put(word, newword);
-
         }
         //add tat ca cac tu vao file
-        for (Map.Entry<String, Word> entry : dictionary.list.entrySet()) {
-            bw.write(entry.getKey() + "\t" + entry.getValue().getWord_explain());
-            bw.newLine();
-        }
-        bw.flush();
-        bw.close();
+        dictionaryExportToFile();
     }
 
-    public void deleteWord() {
+    public void deleteWord() throws IOException {
+        fw = new FileWriter(file_name);
+        bw = new BufferedWriter(fw);
         System.out.println("Nhap tu Tieng Anh ban muon xoa:");
         sc.nextLine();
         String word = sc.nextLine();
@@ -55,7 +66,8 @@ public class DictionaryManagement {
         else {
             System.out.println("Not found!");
         }
-
+        //add tat ca cac tu vao file
+        dictionaryExportToFile();
     }
 
     public void dictionaryLookup() {
