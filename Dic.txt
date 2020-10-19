@@ -1,8 +1,10 @@
-hi	xin chao
-pencil but chi	but chi
-school	truong hoc
-pen	but
-run	chay
-window	cua so
-house	ngoi nha
+car	o to
+computer	may tinh
+father	cha
 hello	xin chao
+house	ngoi nha
+pen	but
+pencil but chi	but chi
+run	chay
+school	truong hoc
+window	cua so

@@ -15,11 +15,13 @@ public class DictionaryCommandline extends DictionaryManagement {
 
     public static void menu() {
         System.out.println("-------------------");
-        System.out.println("1. Dich tu");
-        System.out.println("2. Them tu");
-        System.out.println("3. Xoa tu");
-        System.out.println("4. In tu");
-        System.out.println("5. Ket thuc");
+        System.out.println("1. Translate word");
+        System.out.println("2. Add word");
+        System.out.println("3. Delete word");
+        System.out.println("4. Show all word");
+        System.out.println("5. Fix word");
+        System.out.println("6. Search words");
+        System.out.println("7. End");
         System.out.println("-------------------");
     }
 
@@ -35,19 +37,21 @@ public class DictionaryCommandline extends DictionaryManagement {
             menu();
             choice = sc.nextInt();
             if (choice == 1) {
-                //System.out.println("Dich tu");
                 dm.dictionaryLookup();
             } else if (choice == 2) {
                 dm.insertFromCommandline();
             } else if (choice == 3) {
-                //System.out.println("Xoa tu");
                 dm.deleteWord();
             } else if (choice == 4) {
                 showAllWords();
+            } else if (choice == 5) {
+                dm.fixWord();
+            } else if (choice == 6) {
+                dm.searchWords();
             } else {
                 break;
             }
-            System.out.println("\n \nBan muon lam gi tiep ?");
+            System.out.println("\n \nWhat do you want to do next ?");
             //choice = input.nextInt();
         }
     }

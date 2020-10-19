@@ -1,6 +1,6 @@
-import java.util.HashMap;
+import java.util.TreeMap;
 public class Dictionary {
-    HashMap<String, Word> list = new HashMap<String, Word>();
+    TreeMap<String, Word> list = new TreeMap<String, Word>();
     public Dictionary() {
     }
 }

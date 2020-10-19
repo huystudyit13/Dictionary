@@ -21,5 +21,8 @@ public class Word {
         this.word_target = n;
     }
 
-
+    @Override
+    public String toString() {
+        return word_target + '\t' + word_explain ;
+    }
 }
