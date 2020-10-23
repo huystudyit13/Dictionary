@@ -1,26 +1,27 @@
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.util.TreeMap;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Dictionary extends Application {
 
-  private static final String DATA_FILE = "C:\\Users\\DELL\\IdeaProjects\\testDic\\src\\E_V.txt";
-  private static final String FXML_FILE =
-      "C:\\Users\\DELL\\IdeaProjects\\testDic\\src\\Dictionary_Main.fxml";
-    private static final String SPLITTING_CHARACTERS = "<html>";
-    private Map<String, Word> data = new TreeMap<>();
-
+    private static final String DATA_FILE = "D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt";
+    private static final String FXML_FILE = "D:\\Code big project\\DicitonaryWithFX\\src\\Dictionary_Main.fxml";
+    Map<String, Word> data = new TreeMap<String, Word>();
+    public Dictionary() { }
     @FXML
     private ListView<String> listView;
     @FXML
@@ -71,11 +72,13 @@ public class Dictionary extends Application {
         FileReader fr = new FileReader(DATA_FILE);
         BufferedReader br = new BufferedReader(fr);
         String line = "";
-        while ((line = br.readLine()) != null){
-            String[] word = line.split(SPLITTING_CHARACTERS);
+        while ((line = br.readLine()) != null) {
+            String[] word = line.split("<html>");
             Word addword = new Word(word[0],word[1]);
             data.put(word[0], addword);
         }
         br.close();
     }
+
+
 }

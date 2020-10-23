@@ -1,3 +1,7 @@
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+
 import java.util.Map;
 import java.io.*;
 import java.util.Scanner;
@@ -11,12 +15,35 @@ public class DictionaryManagement {
     public static BufferedWriter bw;
     private static final String file_name = "D:\\Code big project\\Dictionary\\src\\Dic.txt";
 
-    public DictionaryManagement() { }
-    public static void dictionaryExportToFile() throws IOException {
+    public void actAdd(ActionEvent event) {
+        String add = "Da add thanh cong";
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(add);
+        alert.show();
+    }
+    public void actDelete(ActionEvent event) {
+        String add = "Da delete thanh cong";
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(add);
+        alert.show();
+    }
+    public void actFix(ActionEvent event) {
+        String add = "Da fix thanh cong";
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(add);
+        alert.show();
+    }
+    public void actUpdate(ActionEvent event) {
+        String add = "Da update thanh cong";
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(add);
+        alert.show();
+    }
+    /*public static void dictionaryExportToFile() throws IOException {
         fw = new FileWriter(file_name);
         bw = new BufferedWriter(fw);
         //add tat ca cac tu vao file
-        for (Map.Entry<String,Word> entry : dictionary.list.entrySet()) {
+        for (Map.Entry<String,Word> entry : dictionary.data.entrySet()) {
             bw.write(entry.getKey() + "\t" + entry.getValue().getWord_explain());
             bw.newLine();
         }
@@ -31,7 +58,7 @@ public class DictionaryManagement {
         while ((line = br.readLine()) != null){
             String[] word = line.split("\t");
             Word addword = new Word(word[0],word[1]);
-            dictionary.list.put(word[0], addword);
+            dictionary.data.put(word[0], addword);
         }
         br.close();
     }
@@ -45,11 +72,11 @@ public class DictionaryManagement {
         System.out.println("\n" + "Enter the word you want to add:");
             String word = sc.nextLine();
             String mean = sc.nextLine();
-            if( dictionary.list.containsKey(word)) {
+            if( dictionary.data.containsKey(word)) {
                 System.out.println("Dictionary has already contains this word!");
             } else {
                 Word newword = new Word(word, mean);
-                dictionary.list.put(word, newword);
+                dictionary.data.put(word, newword);
                 System.out.println("Done!");
             }
         }
@@ -61,8 +88,8 @@ public class DictionaryManagement {
         System.out.println("Enter the English word you want to delete:");
         sc.nextLine();
         String word = sc.nextLine();
-        if ( dictionary.list.containsKey(word) ) {
-            dictionary.list.remove(word);
+        if ( dictionary.data.containsKey(word) ) {
+            dictionary.data.remove(word);
             System.out.println("Done!");
         } else {
             System.out.println("Not found!");
@@ -71,12 +98,13 @@ public class DictionaryManagement {
         dictionaryExportToFile();
     }
 
+
     public static void dictionaryLookup() {
         System.out.println("Enter the English word you want to find:");
         sc.nextLine();
         String word = sc.nextLine();
-        if ( dictionary.list.containsKey(word) ) {
-            System.out.println(dictionary.list.get(word).toString());
+        if ( dictionary.data.containsKey(word) ) {
+            System.out.println(dictionary.data.get(word).toString());
         } else {
             System.out.println("Not found!");
         }
@@ -86,14 +114,14 @@ public class DictionaryManagement {
         System.out.println("Enter the English word you want to change");
         sc.nextLine();
         String oldWord = sc.nextLine();
-        if ( dictionary.list.containsKey(oldWord) ) {
-            dictionary.list.remove(oldWord);
+        if ( dictionary.data.containsKey(oldWord) ) {
+            dictionary.data.remove(oldWord);
             System.out.println("Enter the new English word");
             String newEword = sc.nextLine();
             System.out.println("Enter the new meaning");
             String newmeaning = sc.nextLine();
             Word newword = new Word(newEword, newmeaning);
-            dictionary.list.put(newEword, newword);
+            dictionary.data.put(newEword, newword);
             System.out.println("Done!");
             dictionaryExportToFile();
         } else {
@@ -107,7 +135,7 @@ public class DictionaryManagement {
         String s = sc.nextLine();
         int n = s.length() ;
         boolean check = false;
-        for (Map.Entry<String, Word> entry : dictionary.list.entrySet()) {
+        for (Map.Entry<String, Word> entry : dictionary.data.entrySet()) {
             int m = entry.getKey().length();
             if (m >= n) {
                 String ss = entry.getKey().substring(0, n);
@@ -121,5 +149,5 @@ public class DictionaryManagement {
             System.out.println("Not found!");
         }
     }
-
+*/
 }

@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane prefHeight="510.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="510.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DictionaryManagement">
    <top>
       <HBox prefHeight="46.0" prefWidth="643.0" BorderPane.alignment="CENTER">
          <children>
             <TextField prefHeight="44.0" prefWidth="192.0" promptText="Search word" />
-            <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="111.5" text="Add word" textFill="#0d0000" />
-            <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="111.5" text="Delete word" textFill="#0d0000" />
-            <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="111.5" text="Fix word" textFill="#0d0000" />
-            <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="111.5" text="Update dictionary" textFill="#0d0000" />
+            <Button mnemonicParsing="false" onAction="#actAdd" prefHeight="44.0" prefWidth="111.5" text="Add word" textFill="#0d0000" />
+            <Button mnemonicParsing="false" onAction="#actDelete" prefHeight="44.0" prefWidth="111.5" text="Delete word" textFill="#0d0000" />
+            <Button mnemonicParsing="false" onAction="#actFix" prefHeight="44.0" prefWidth="111.5" text="Fix word" textFill="#0d0000" />
+            <Button mnemonicParsing="false" onAction="#actUpdate" prefHeight="44.0" prefWidth="111.5" text="Update dictionary" textFill="#0d0000" />
          </children>
       </HBox>
    </top>

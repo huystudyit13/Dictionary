@@ -16,9 +16,9 @@ public class Word {
         this.word_explain = n;
     }
 
-    public Word(String n, String m) {
-        this.word_explain = m;
-        this.word_target = n;
+    public Word(String target, String explain) {
+        this.word_explain = explain;
+        this.word_target = target;
     }
 
     @Override
