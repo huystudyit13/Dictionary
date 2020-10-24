@@ -12,8 +12,8 @@
    <top>
       <HBox prefHeight="46.0" prefWidth="643.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField prefHeight="44.0" prefWidth="192.0" promptText="Search word" />
-            <Button mnemonicParsing="false" onAction="#actAdd" prefHeight="44.0" prefWidth="111.5" text="Add word" textFill="#0d0000" />
+            <TextField fx:id="searchField" prefHeight="44.0" prefWidth="192.0" promptText="Search word" />
+            <Button mnemonicParsing="false" onAction="#changeToAddScene" prefHeight="44.0" prefWidth="111.5" text="Add word" textFill="#0d0000" />
             <Button mnemonicParsing="false" onAction="#actDelete" prefHeight="44.0" prefWidth="111.5" text="Delete word" textFill="#0d0000" />
             <Button mnemonicParsing="false" onAction="#actFix" prefHeight="44.0" prefWidth="111.5" text="Fix word" textFill="#0d0000" />
             <Button mnemonicParsing="false" onAction="#actUpdate" prefHeight="44.0" prefWidth="111.5" text="Update dictionary" textFill="#0d0000" />
@@ -23,10 +23,10 @@
    <left>
       <ListView fx:id="listView" prefHeight="426.0" prefWidth="193.0" BorderPane.alignment="CENTER" />
    </left>
-   <center>
-      <WebView fx:id="definitionView" prefHeight="198.0" prefWidth="65.0" BorderPane.alignment="CENTER" />
-   </center>
    <bottom>
       <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="201.0" text="Made by huydo and quando " textAlignment="JUSTIFY" BorderPane.alignment="BOTTOM_RIGHT" />
    </bottom>
+   <center>
+      <WebView fx:id="definitionView" prefHeight="198.0" prefWidth="65.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

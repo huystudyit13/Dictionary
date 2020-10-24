@@ -1,8 +1,13 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
-import java.util.Map;
 import java.io.*;
 import java.util.Scanner;
 
@@ -15,12 +20,22 @@ public class DictionaryManagement {
     public static BufferedWriter bw;
     private static final String file_name = "D:\\Code big project\\Dictionary\\src\\Dic.txt";
 
-    public void actAdd(ActionEvent event) {
-        String add = "Da add thanh cong";
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(add);
-        alert.show();
+
+    public void changeToAddScene(ActionEvent event) throws IOException {
+        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Add_Scene.fxml"));
+        Scene tableViewScene = new Scene(tableViewParent);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(tableViewScene);
+        window.show();
     }
+
+    public void closeApp(ActionEvent event) {
+        Platform.exit();
+        System.exit(0);
+    }
+
     public void actDelete(ActionEvent event) {
         String add = "Da delete thanh cong";
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -38,6 +53,9 @@ public class DictionaryManagement {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(add);
         alert.show();
+    }
+    public void searchWord() {
+
     }
     /*public static void dictionaryExportToFile() throws IOException {
         fw = new FileWriter(file_name);
