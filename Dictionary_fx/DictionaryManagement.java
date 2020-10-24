@@ -1,4 +1,7 @@
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,81 +9,43 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.Scanner;
+
+import java.util.Map;
+
+import java.util.TreeMap;
+import java.io.IOException;
 
 public class DictionaryManagement {
-    public static Dictionary dictionary = new Dictionary();
-    public static Scanner sc = new Scanner(System.in);
-    public static FileReader fr;
-    public static BufferedReader br;
-    public static FileWriter fw;
-    public static BufferedWriter bw;
-    private static final String file_name = "D:\\Code big project\\Dictionary\\src\\Dic.txt";
 
 
-    public void changeToAddScene(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Add_Scene.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
+    //ObservableMap oMap = FXCollections.observableMap(data);
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    private TextField text;
 
-        window.setScene(tableViewScene);
-        window.show();
-    }
 
-    public void closeApp(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
-    }
+    public DictionaryManagement() {}
 
-    public void actDelete(ActionEvent event) {
-        String add = "Da delete thanh cong";
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(add);
-        alert.show();
-    }
-    public void actFix(ActionEvent event) {
-        String add = "Da fix thanh cong";
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(add);
-        alert.show();
-    }
-    public void actUpdate(ActionEvent event) {
-        String add = "Da update thanh cong";
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(add);
-        alert.show();
-    }
+
     public void searchWord() {
 
     }
-    /*public static void dictionaryExportToFile() throws IOException {
-        fw = new FileWriter(file_name);
-        bw = new BufferedWriter(fw);
-        //add tat ca cac tu vao file
-        for (Map.Entry<String,Word> entry : dictionary.data.entrySet()) {
-            bw.write(entry.getKey() + "\t" + entry.getValue().getWord_explain());
-            bw.newLine();
-        }
-        bw.flush();
-        bw.close();
 
-    }
-    public static void insertFromFile() throws IOException {
-        fr = new FileReader(file_name);
-        br = new BufferedReader(fr);
-        String line = "";
-        while ((line = br.readLine()) != null){
-            String[] word = line.split("\t");
-            Word addword = new Word(word[0],word[1]);
-            dictionary.data.put(word[0], addword);
-        }
-        br.close();
-    }
-
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        try {
+//            readData();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        loadWordList();
+//    }
+    /*
     public static void insertFromCommandline() throws IOException {
         System.out.println("How many words do you want to add ?");
         int number = sc.nextInt();
@@ -97,20 +62,6 @@ public class DictionaryManagement {
                 dictionary.data.put(word, newword);
                 System.out.println("Done!");
             }
-        }
-        //add tat ca cac tu vao file
-        dictionaryExportToFile();
-    }
-
-    public static void deleteWord() throws IOException {
-        System.out.println("Enter the English word you want to delete:");
-        sc.nextLine();
-        String word = sc.nextLine();
-        if ( dictionary.data.containsKey(word) ) {
-            dictionary.data.remove(word);
-            System.out.println("Done!");
-        } else {
-            System.out.println("Not found!");
         }
         //add tat ca cac tu vao file
         dictionaryExportToFile();
