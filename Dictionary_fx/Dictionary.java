@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -24,16 +25,23 @@ public class Dictionary extends Application {
     public static BufferedReader br;
     public static FileWriter fw;
     public static BufferedWriter bw;
-    private static final String file_name = "E:\\testDic\\src\\E_V.txt";
+    private static final String file_name = "D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt";
     private Map<String, Word> data = new TreeMap<String, Word>();
     private ObservableList<String> list = FXCollections.observableArrayList();
-
-    private static final String FXML_FILE = "E:\\testDic\\src\\Dictionary_Main1.fxml";
+    private static final String FXML_FILE = "D:\\Code big project\\DicitonaryWithFX\\src\\Dictionary_Main1.fxml";
 
     @FXML
     private ListView<String> listView;
+
     @FXML
     private WebView definitionView;
+
+    @FXML
+    private TextField add_NewWord;
+
+    @FXML
+    private TextField add_NewDefi;
+
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -89,31 +97,16 @@ public class Dictionary extends Application {
 
 
     public void changeToMainScene(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Dictionary_Main1.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        // init components
-        initComponents(tableViewScene);
-
-        // read word list from E_V.txt
-        readData();
-
-        // load word list to the ListView
-        loadWordList();
-        window.setScene(tableViewScene);
-        window.show();
 
     }
 
-
-
     public void changeToAddScene(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("Add_Scene.fxml"));
+
         Scene tableViewScene = new Scene(tableViewParent);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
+        Stage window = new Stage();
         window.setScene(tableViewScene);
+
         window.show();
     }
 
@@ -123,6 +116,18 @@ public class Dictionary extends Application {
         System.exit(0);
     }
 
+    @FXML
+    public void actAdd(ActionEvent event) throws IOException {
+        String addNewWord = add_NewWord.getText();
+        String addNewDefi = add_NewDefi.getText();
+        Word newword = new Word(addNewWord,addNewDefi);
+        data.put(addNewWord,newword);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Done!");
+        alert.show();
+        changeToMainScene(event);
+    }
     public void actDelete(ActionEvent event) {
         String selected = listView.getSelectionModel().getSelectedItem();
 //        this.list.remove(selected);

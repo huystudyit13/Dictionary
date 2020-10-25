@@ -8,8 +8,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Dictionary">
    <children>
-      <TextField layoutX="152.0" layoutY="81.0" />
-      <TextField layoutX="152.0" layoutY="134.0" />
+      <TextField fx:id="add_NewWord" layoutX="152.0" layoutY="81.0" promptText="Enter New Word" />
+      <TextField fx:id="add_NewDefi" layoutX="152.0" layoutY="134.0" promptText="Enter New Definition" />
       <Label layoutX="35.0" layoutY="84.0" text="New Word" textFill="#007bff">
          <font>
             <Font size="14.0" />
@@ -26,7 +26,7 @@
             <Font name="Arial" size="29.0" />
          </font>
       </Label>
-      <Button layoutX="135.0" layoutY="183.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Nhập">
+      <Button layoutX="135.0" layoutY="183.0" mnemonicParsing="false" onAction="#actAdd" prefHeight="25.0" prefWidth="149.0" text="Nhập">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
