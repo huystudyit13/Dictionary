@@ -30,7 +30,8 @@ public class Controller implements Initializable{
     public static BufferedReader br;
     public static FileWriter fw;
     public static BufferedWriter bw;
-    public static final String file_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt";
+    public static final String fileEV_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt";
+    public static final String fileVE_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\V_E.txt";
     public Map<String, Word> data = new TreeMap<String, Word>();
     public ObservableList<String> list = FXCollections.observableArrayList();
 
@@ -59,7 +60,7 @@ public class Controller implements Initializable{
     }
 
     public void readData() throws IOException {
-        fr = new FileReader(file_name);
+        fr = new FileReader(fileEV_name);
         br = new BufferedReader(fr);
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -168,4 +169,27 @@ public class Controller implements Initializable{
         alert.showAndWait();
     }
 
+    public void changeVE(ActionEvent event) throws IOException {
+        this.data.clear();
+        this.list.clear();
+        fr = new FileReader(fileVE_name);
+        br = new BufferedReader(fr);
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            String[] word = line.split("<html>");
+            Word addword = new Word(word[0],word[1]);
+            this.data.put(word[0], addword);
+        }
+        br.close();
+        this.list.addAll(this.data.keySet());
+        this.listView.setItems(this.list);
+    }
+
+    public void changeEV(ActionEvent event) throws IOException {
+        this.data.clear();
+        this.list.clear();
+        readData();
+        this.list.addAll(this.data.keySet());
+        this.listView.setItems(this.list);
+    }
 }
