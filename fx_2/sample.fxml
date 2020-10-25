@@ -15,7 +15,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
         <TextField fx:id="searchField" layoutY="27.0" prefHeight="25.0" prefWidth="180.0" />
-        <Button layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#changeToAddScene" prefHeight="25.0" prefWidth="105.0" text="Add Word" />
+        <Button layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#actAdd" prefHeight="25.0" prefWidth="105.0" text="Add Word" />
         <Button layoutX="285.0" layoutY="27.0" mnemonicParsing="false" onAction="#actDelete" prefHeight="25.0" prefWidth="105.0" text="Delete Word" />
         <Button layoutX="390.0" layoutY="27.0" mnemonicParsing="false" onAction="#actFix" prefHeight="25.0" prefWidth="105.0" text="Fix Word" />
         <Button layoutX="495.0" layoutY="27.0" mnemonicParsing="false" onAction="#actUpdate" prefHeight="25.0" prefWidth="105.0" text="Update Dic" />

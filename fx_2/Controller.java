@@ -5,19 +5,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+
+
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
+
+import javafx.util.Pair;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -73,22 +75,65 @@ public class Controller implements Initializable{
         System.exit(0);
     }
 
-    public void changeToAddScene(ActionEvent event) throws Exception {
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("AddScene.fxml"));
-//        Parent addScene = loader.load();
-//        Scene scene = new Scene(addScene);
-//        stage.setScene(scene);
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddScene.fxml"));
+    public void actAdd(ActionEvent event){
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Add new word");
+        dialog.setHeaderText(null);
+        ButtonType addButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = new Stage();
-        window.setScene(tableViewScene);
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20,150,10,10));
 
-        window.show();
+        TextField newWord = new TextField();
+        newWord.setPromptText("New word");
+        TextField newDef = new TextField();
+        newDef.setPromptText("Definition");
+
+        grid.add(new Label("New word:"),0,0);
+        grid.add(newWord,1,0);
+        grid.add(new Label("Definition:"),0,1);
+        grid.add(newDef,1,1);
+        Node add = dialog.getDialogPane().lookupButton(addButton);
+        add.setDisable(true);
+
+        newWord.textProperty().addListener((observable, oldValue, newValue) -> {
+            add.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == addButton) {
+                return new Pair<>(newWord.getText(), newDef.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(word -> {
+            if(this.data.containsKey(word.getKey())){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Error ");
+                alert.setHeaderText("Can not add word");
+                alert.setContentText("This word has already existed!");
+                alert.showAndWait();
+            } else {
+                Word obj = new Word(word.getKey(), word.getValue());
+                this.data.put(word.getKey(), obj);
+                this.list.clear();
+                this.list.addAll(this.data.keySet());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("Done!");
+                alert.showAndWait();
+            }
+        });
+
     }
-
 
 
     public void actDelete(ActionEvent event) {
