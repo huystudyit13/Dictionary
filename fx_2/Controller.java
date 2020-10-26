@@ -1,10 +1,7 @@
-package sample;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,8 +14,11 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.util.Pair;
 
-import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+
+import java.io.*;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -31,8 +31,8 @@ public class Controller implements Initializable{
     public static BufferedReader br;
     public static FileWriter fw;
     public static BufferedWriter bw;
-    public static final String fileEV_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt";
-    public static final String fileVE_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\V_E.txt";
+    public static final String fileEV_name = "D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt";
+    public static final String fileVE_name = "D:\\Code big project\\DicitonaryWithFX\\src\\V_E.txt";
     public Map<String, Word> data = new TreeMap<String, Word>();
     public ObservableList<String> list = FXCollections.observableArrayList();
     public boolean check = true;
@@ -200,10 +200,10 @@ public class Controller implements Initializable{
 
     public void actUpdate(ActionEvent event) throws IOException {
         if (check) {
-            fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt");
+            fw = new FileWriter("D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt");
             bw = new BufferedWriter(fw);
         } else {
-            fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\V_E.txt");
+            fw = new FileWriter("D:\\Code big project\\DicitonaryWithFX\\src\\V_E.txt");
             bw = new BufferedWriter(fw);
         }
         //add tat ca cac tu vao file
@@ -219,7 +219,82 @@ public class Controller implements Initializable{
         alert.setContentText("Done!");
         alert.showAndWait();
     }
+    public void searchWithAPI(ActionEvent event) {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Search with google API");
+        dialog.setHeaderText("Search with google API");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
 
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20,50,10,10));
+
+        ToggleGroup typeDictionary = new ToggleGroup();
+        RadioButton E_VButton = new RadioButton("English to VietNamese");
+        E_VButton.setToggleGroup(typeDictionary);
+        RadioButton V_EButton = new RadioButton("Vietnamese to English");
+        V_EButton.setToggleGroup(typeDictionary);
+        TextField newWord = new TextField();
+        newWord.setPromptText("New word");
+        WebView webDefinition = new WebView();
+        webDefinition.setMaxSize(300,200);
+        Button searchButton = new Button();
+        searchButton.setText("Search");
+
+        grid.add(new Label("Choose type of Translate:"),0,0);
+        grid.add(E_VButton,1,0);
+        grid.add(V_EButton,1,1);
+        grid.add(new Label("New word:"),0,2);
+        grid.add(newWord,1,2);
+        grid.add(new Label("Definition:"),0,3);
+        grid.add(webDefinition,1,3);
+        grid.add(searchButton,2,2);
+
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String text = newWord.getText();
+                if (E_VButton.isSelected()) {
+                    try {
+                        webDefinition.getEngine().loadContent(translate("en", "vi", text));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        webDefinition.getEngine().loadContent(translate("vi", "en", text));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.showAndWait();
+    }
+
+    private static String translate(String langFrom, String langTo, String text) throws IOException {
+        // INSERT YOU URL HERE
+        String urlStr = "https://script.google.com/macros/s/AKfycbyKCVFomoxRlGw8scWXMFIQrnBcA8BpNeSDIoJCp-la_UuxLKw2/exec" +
+                "?q=" + URLEncoder.encode(text, "UTF-8") +
+                "&target=" + langTo +
+                "&source=" + langFrom;
+        URL url = new URL(urlStr);
+        StringBuilder response = new StringBuilder();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
+    }
     public void changeVE(ActionEvent event) throws IOException {
         check = false;
         this.definitionView.getEngine().loadContent("");
