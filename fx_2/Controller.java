@@ -34,12 +34,15 @@ public class Controller implements Initializable{
     public static final String fileVE_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\V_E.txt";
     public Map<String, Word> data = new TreeMap<String, Word>();
     public ObservableList<String> list = FXCollections.observableArrayList();
+    public boolean check = true;
 
 
     @FXML
     public ListView<String> listView;
     @FXML
     public WebView definitionView;
+    @FXML
+    public TextField textField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -48,8 +51,7 @@ public class Controller implements Initializable{
                     Word selectedWord = data.get(newValue.trim());
                     String definition = selectedWord.getWord_explain();
                     definitionView.getEngine().loadContent(definition, "text/html");
-                }
-        );
+                });
         try {
             readData();
         } catch (IOException e) {
@@ -123,7 +125,8 @@ public class Controller implements Initializable{
                 alert.setContentText("This word has already existed!");
                 alert.showAndWait();
             } else {
-                Word obj = new Word(word.getKey(), word.getValue());
+                String s = "<i>" + word.getKey() + "</i><br/><ul><li><font color='#cc0001'><b> " + word.getValue() + "</b></font></li></ul></html>";
+                Word obj = new Word(word.getKey(), s);
                 this.data.put(word.getKey(), obj);
                 this.list.clear();
                 this.list.addAll(this.data.keySet());
@@ -133,7 +136,6 @@ public class Controller implements Initializable{
                 alert.showAndWait();
             }
         });
-
     }
 
 
@@ -153,15 +155,20 @@ public class Controller implements Initializable{
         alert.showAndWait();
     }
     public void actUpdate(ActionEvent event) throws IOException {
-//        fw = new FileWriter("E:\\testDic\\src\\1.txt");
-//        bw = new BufferedWriter(fw);
-//        //add tat ca cac tu vao file
-//        for (Map.Entry<String,Word> entry : data.entrySet()) {
-//            bw.write(entry.getKey() + "<html>" + entry.getValue().getWord_explain());
-//            bw.newLine();
-//        }
-//        bw.flush();
-//        bw.close();
+        if(check) {
+            fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt");
+            bw = new BufferedWriter(fw);
+        } else {
+            fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\V_E.txt");
+            bw = new BufferedWriter(fw);
+        }
+        //add tat ca cac tu vao file
+        for (Map.Entry<String,Word> entry : data.entrySet()) {
+            bw.write(entry.getKey() + "<html>" + entry.getValue().getWord_explain());
+            bw.newLine();
+        }
+        bw.flush();
+        bw.close();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -170,6 +177,7 @@ public class Controller implements Initializable{
     }
 
     public void changeVE(ActionEvent event) throws IOException {
+        check = false;
         this.data.clear();
         this.list.clear();
         fr = new FileReader(fileVE_name);
@@ -186,6 +194,7 @@ public class Controller implements Initializable{
     }
 
     public void changeEV(ActionEvent event) throws IOException {
+        check = true;
         this.data.clear();
         this.list.clear();
         readData();

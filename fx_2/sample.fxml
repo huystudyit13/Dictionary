@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-        <TextField fx:id="searchField" layoutY="27.0" prefHeight="25.0" prefWidth="180.0" />
+        <TextField fx:id="textField" layoutY="27.0" prefHeight="25.0" prefWidth="180.0" promptText="Search " />
         <Button layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#actAdd" prefHeight="25.0" prefWidth="105.0" text="Add Word" />
         <Button layoutX="285.0" layoutY="27.0" mnemonicParsing="false" onAction="#actDelete" prefHeight="25.0" prefWidth="105.0" text="Delete Word" />
         <Button layoutX="390.0" layoutY="27.0" mnemonicParsing="false" onAction="#actFix" prefHeight="25.0" prefWidth="105.0" text="Fix Word" />
