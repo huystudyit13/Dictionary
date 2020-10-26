@@ -4,16 +4,17 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-
-
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
-
 import javafx.util.Pair;
 
 import java.io.*;
@@ -99,6 +100,7 @@ public class Controller implements Initializable{
         grid.add(newWord,1,0);
         grid.add(new Label("Definition:"),0,1);
         grid.add(newDef,1,1);
+
         Node add = dialog.getDialogPane().lookupButton(addButton);
         add.setDisable(true);
 
@@ -148,14 +150,56 @@ public class Controller implements Initializable{
         alert.setContentText("Done!");
         alert.showAndWait();
     }
+
     public void actFix(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText("Done!");
-        alert.showAndWait();
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Fix word");
+        dialog.setHeaderText(null);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        HTMLEditor htmlEditor = new HTMLEditor();
+        htmlEditor.setPrefHeight(245);
+        htmlEditor.setMinHeight(220);
+        String def = this.listView.getSelectionModel().getSelectedItem();
+        String INITIAL_TEXT = this.data.get(def).getWord_explain();
+        htmlEditor.setHtmlText(INITIAL_TEXT);
+
+        Button showHTMLButton = new Button("Show in WebView");
+        WebView webView = new WebView();
+        webView.setPrefHeight(245);
+        webView.setMinHeight(220);
+
+        showHTMLButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                webView.getEngine().loadContent(htmlEditor.getHtmlText(),"text/html");
+            }
+        });
+
+        VBox root = new VBox();
+        root.setPadding(new Insets(10,10,10,10));
+        root.setSpacing(5);
+        root.getChildren().addAll(htmlEditor, showHTMLButton, webView);
+
+        dialog.getDialogPane().setContent(root);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return htmlEditor.getHtmlText();
+            }
+            return null;
+        });
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(newDef ->{
+            this.data.get(def).setWord_explain(newDef);
+            this.definitionView.getEngine().loadContent(newDef,"text/html");
+        });
+
+
     }
+
     public void actUpdate(ActionEvent event) throws IOException {
-        if(check) {
+        if (check) {
             fw = new FileWriter("C:\\Users\\DELL\\IdeaProjects\\test\\src\\sample\\E_V.txt");
             bw = new BufferedWriter(fw);
         } else {
@@ -178,6 +222,7 @@ public class Controller implements Initializable{
 
     public void changeVE(ActionEvent event) throws IOException {
         check = false;
+        this.definitionView.getEngine().loadContent("");
         this.data.clear();
         this.list.clear();
         fr = new FileReader(fileVE_name);
@@ -195,10 +240,12 @@ public class Controller implements Initializable{
 
     public void changeEV(ActionEvent event) throws IOException {
         check = true;
+        this.definitionView.getEngine().loadContent("");
         this.data.clear();
         this.list.clear();
         readData();
         this.list.addAll(this.data.keySet());
         this.listView.setItems(this.list);
     }
+
 }
