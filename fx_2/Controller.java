@@ -1,3 +1,6 @@
+
+import com.sun.speech.freetts.VoiceManager;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,10 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.net.HttpURLConnection;
@@ -23,16 +29,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
-import java.util.function.Predicate;
 
-public class Controller implements Initializable{
+public class Controller extends Application implements Initializable{
 
     public static FileReader fr;
     public static BufferedReader br;
     public static FileWriter fw;
     public static BufferedWriter bw;
-    public static final String fileEV_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\E_V.txt";
-    public static final String fileVE_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\V_E.txt";
+    public static final String fileEV_name = "D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt";
+    public static final String fileVE_name = "D:\\Code big project\\DicitonaryWithFX\\src\\V_E.txt";
     public Map<String, Word> data = new TreeMap<>();
     public ObservableList<String> list = FXCollections.observableArrayList();
     public FilteredList<String> filteredList;
@@ -84,6 +89,7 @@ public class Controller implements Initializable{
         }));
 
         this.listView.setItems(filteredList);
+
 
     }
 
@@ -165,54 +171,67 @@ public class Controller implements Initializable{
 
 
     public void actDelete(ActionEvent event) {
-        String selected = listView.getSelectionModel().getSelectedItem();
-        this.list.remove(selected);
-        this.data.remove(selected);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText("Done!");
-        alert.showAndWait();
+        if(listView.getSelectionModel().getSelectedItem() != null) {
+            String selected = listView.getSelectionModel().getSelectedItem();
+            this.list.remove(selected);
+            this.data.remove(selected);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Done!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Choose a word that you want to delete!");
+            alert.showAndWait();
+        }
     }
 
     public void actFix(ActionEvent event) {
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Fix word");
-        dialog.setHeaderText(null);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        if(listView.getSelectionModel().getSelectedItem() != null) {
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Fix word");
+            dialog.setHeaderText(null);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        HTMLEditor htmlEditor = new HTMLEditor();
-        htmlEditor.setPrefHeight(245);
-        htmlEditor.setMinHeight(220);
-        String def = this.listView.getSelectionModel().getSelectedItem();
-        String INITIAL_TEXT = this.data.get(def).getWord_explain();
-        htmlEditor.setHtmlText(INITIAL_TEXT);
+            HTMLEditor htmlEditor = new HTMLEditor();
+            htmlEditor.setPrefHeight(245);
+            htmlEditor.setMinHeight(220);
+            String def = this.listView.getSelectionModel().getSelectedItem();
+            String INITIAL_TEXT = this.data.get(def).getWord_explain();
+            htmlEditor.setHtmlText(INITIAL_TEXT);
 
-        Button showHTMLButton = new Button("Show in WebView");
-        WebView webView = new WebView();
-        webView.setPrefHeight(245);
-        webView.setMinHeight(220);
+            Button showHTMLButton = new Button("Show in WebView");
+            WebView webView = new WebView();
+            webView.setPrefHeight(245);
+            webView.setMinHeight(220);
 
-        showHTMLButton.setOnAction(event1 -> webView.getEngine().loadContent(htmlEditor.getHtmlText(),"text/html"));
+            showHTMLButton.setOnAction(event1 -> webView.getEngine().loadContent(htmlEditor.getHtmlText(), "text/html"));
 
-        VBox root = new VBox();
-        root.setPadding(new Insets(10,10,10,10));
-        root.setSpacing(5);
-        root.getChildren().addAll(htmlEditor, showHTMLButton, webView);
+            VBox root = new VBox();
+            root.setPadding(new Insets(10, 10, 10, 10));
+            root.setSpacing(5);
+            root.getChildren().addAll(htmlEditor, showHTMLButton, webView);
 
-        dialog.getDialogPane().setContent(root);
+            dialog.getDialogPane().setContent(root);
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == ButtonType.OK) {
-                return htmlEditor.getHtmlText();
-            }
-            return null;
-        });
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(newDef ->{
-            this.data.get(def).setWord_explain(newDef);
-            this.definitionView.getEngine().loadContent(newDef,"text/html");
-        });
-
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == ButtonType.OK) {
+                    return htmlEditor.getHtmlText();
+                }
+                return null;
+            });
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(newDef -> {
+                this.data.get(def).setWord_explain(newDef);
+                this.definitionView.getEngine().loadContent(newDef, "text/html");
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Choose a word that you want to fix!");
+            alert.showAndWait();
+        }
 
     }
 
@@ -236,6 +255,30 @@ public class Controller implements Initializable{
         alert.setContentText("Done!");
         alert.showAndWait();
     }
+
+    public void aboutUs(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Credits :\n" +"\tDo Quang Huy\n" + "\tDo Manh Quan");
+        alert.showAndWait();
+    }
+
+    public void textToSpeech(MouseEvent event) {
+        if(listView.getSelectionModel().getSelectedItem() != null) {
+            String text = listView.getSelectionModel().getSelectedItem();
+
+            com.sun.speech.freetts.Voice voice = VoiceManager.getInstance().getVoice("kevin16");
+            voice.allocate();
+            voice.speak(text);
+        }
+        else {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText("Choose a word that you want to Speak!");
+        alert.showAndWait();
+        }
+    }
+
     public void searchWithAPI(ActionEvent event) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Search with google API");
@@ -314,7 +357,7 @@ public class Controller implements Initializable{
         this.data.clear();
         this.list.clear();
         check = false;
-        
+
         fr = new FileReader(fileVE_name);
         br = new BufferedReader(fr);
         String line ;
@@ -334,8 +377,11 @@ public class Controller implements Initializable{
         this.list.clear();
         readData();
         this.list.addAll(this.data.keySet());
-
     }
 
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
 }

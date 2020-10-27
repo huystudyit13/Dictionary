@@ -9,21 +9,63 @@
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="750.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
     <children>
-        <TextField fx:id="textField" layoutY="27.0" prefHeight="25.0" prefWidth="180.0" promptText="Search " />
-        <Button layoutX="180.0" layoutY="27.0" mnemonicParsing="false" onAction="#actAdd" prefHeight="25.0" prefWidth="105.0" text="Add Word" />
-        <Button layoutX="285.0" layoutY="27.0" mnemonicParsing="false" onAction="#actDelete" prefHeight="25.0" prefWidth="105.0" text="Delete Word" />
-        <Button layoutX="390.0" layoutY="27.0" mnemonicParsing="false" onAction="#actFix" prefHeight="25.0" prefWidth="105.0" text="Fix Word" />
-        <Button layoutX="495.0" layoutY="27.0" mnemonicParsing="false" onAction="#actUpdate" prefHeight="25.0" prefWidth="105.0" text="Update Dic" />
-        <ListView fx:id="listView" layoutY="52.0" prefHeight="348.0" prefWidth="180.0" />
-        <WebView fx:id="definitionView" layoutX="180.0" layoutY="52.0" prefHeight="348.0" prefWidth="420.0" />
-        <MenuBar layoutY="-5.0" prefHeight="32.0" prefWidth="600.0">
+        <TextField fx:id="textField" layoutX="1.0" layoutY="27.0" prefHeight="32.0" prefWidth="226.0" promptText="Search " />
+        <Button layoutX="227.0" layoutY="27.0" mnemonicParsing="false" onAction="#actAdd" prefHeight="32.0" prefWidth="132.0" text="Add Word">
+         <effect>
+            <Lighting bumpInput="$null">
+               <light>
+                  <Light.Distant color="AQUA" />
+               </light>
+            </Lighting>
+         </effect></Button>
+        <Button layoutX="359.0" layoutY="27.0" mnemonicParsing="false" onAction="#actDelete" prefHeight="32.0" prefWidth="132.0" text="Delete Word">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Blend />
+               </bumpInput>
+               <light>
+                  <Light.Distant color="#00ff80" />
+               </light>
+            </Lighting>
+         </effect></Button>
+        <Button layoutX="488.0" layoutY="27.0" mnemonicParsing="false" onAction="#actFix" prefHeight="32.0" prefWidth="132.0" text="Fix Word">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Blend />
+               </bumpInput>
+               <light>
+                  <Light.Distant color="YELLOW" />
+               </light>
+            </Lighting>
+         </effect></Button>
+        <Button layoutX="620.0" layoutY="27.0" mnemonicParsing="false" onAction="#actUpdate" prefHeight="32.0" prefWidth="132.0" text="Update Dic">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Blend />
+               </bumpInput>
+               <light>
+                  <Light.Distant color="#ff7878" />
+               </light>
+            </Lighting>
+         </effect></Button>
+        <ListView fx:id="listView" layoutX="1.0" layoutY="58.0" prefHeight="486.0" prefWidth="225.0" />
+        <WebView fx:id="definitionView" layoutX="225.0" layoutY="58.0" prefHeight="486.0" prefWidth="525.0" />
+        <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="750.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -51,15 +93,27 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#aboutUs" text="About us" />
                     </items>
                 </Menu>
             </menus>
+         <effect>
+            <Lighting bumpInput="$null">
+               <light>
+                  <Light.Distant color="#ffb8ff" />
+               </light>
+            </Lighting>
+         </effect>
         </MenuBar>
-      <Label layoutX="335.0" layoutY="397.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="39.0" prefWidth="251.0" text="Made by huydo feat quando" textFill="#001eff">
+      <Label layoutX="495.0" layoutY="505.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="39.0" prefWidth="251.0" text="Made by huydo feat quando" textFill="#001eff">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="716.0" layoutY="59.0" onMouseClicked="#textToSpeech" onTouchPressed="#textToSpeech" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@speakButton.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
