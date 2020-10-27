@@ -50,9 +50,13 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         this.listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    Word selectedWord = data.get(newValue.trim());
-                    String definition = selectedWord.getWord_explain();
-                    definitionView.getEngine().loadContent(definition, "text/html");
+                    if( newValue != null) {
+                        Word selectedWord = data.get(newValue.trim());
+                        String definition = selectedWord.getWord_explain();
+                        definitionView.getEngine().loadContent(definition, "text/html");
+                    } else {
+                        this.definitionView.getEngine().loadContent("");
+                    }
                 });
         try {
             readData();
@@ -63,7 +67,7 @@ public class Controller implements Initializable{
         this.listView.setItems(this.list);
 
         filteredList = new FilteredList<>(list,e ->true);
-        textField.setOnKeyPressed(e -> textField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate((Predicate<? super String>) list->{
+        textField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(list->{
             if(newValue == null || newValue.isEmpty()) {
                 return true;
             }
@@ -77,7 +81,7 @@ public class Controller implements Initializable{
                 }
             }
             return false;
-        })));
+        }));
 
         this.listView.setItems(filteredList);
 
@@ -305,12 +309,12 @@ public class Controller implements Initializable{
         in.close();
         return response.toString();
     }
+
     public void changeVE(ActionEvent event) throws IOException {
         this.data.clear();
         this.list.clear();
-        //this.filteredList.clear();
         check = false;
-        this.definitionView.getEngine().loadContent("");
+        
         fr = new FileReader(fileVE_name);
         br = new BufferedReader(fr);
         String line ;
@@ -321,21 +325,17 @@ public class Controller implements Initializable{
         }
         br.close();
         this.list.addAll(this.data.keySet());
-        //this.filteredList = new FilteredList<>(list,e ->true);
-        //this.listView.setItems(this.list);
+
     }
 
     public void changeEV(ActionEvent event) throws IOException {
-        this.listView.getSelectionModel().clearSelection();
-        this.definitionView.getEngine().loadContent("");
         check = true;
         this.data.clear();
         this.list.clear();
-        //this.filteredList.clear();
         readData();
         this.list.addAll(this.data.keySet());
-        //this.listView.setItems(this.list);
-        //this.filteredList = new FilteredList<>(list,e ->true);
+
     }
+
 
 }
