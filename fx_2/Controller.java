@@ -1,8 +1,8 @@
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -23,18 +23,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
 public class Controller implements Initializable{
-
 
     public static FileReader fr;
     public static BufferedReader br;
     public static FileWriter fw;
     public static BufferedWriter bw;
-    public static final String fileEV_name = "D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt";
-    public static final String fileVE_name = "D:\\Code big project\\DicitonaryWithFX\\src\\V_E.txt";
-    public Map<String, Word> data = new TreeMap<String, Word>();
+    public static final String fileEV_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\E_V.txt";
+    public static final String fileVE_name = "C:\\Users\\DELL\\IdeaProjects\\test\\src\\V_E.txt";
+    public Map<String, Word> data = new TreeMap<>();
     public ObservableList<String> list = FXCollections.observableArrayList();
+    public FilteredList<String> filteredList;
     public boolean check = true;
 
 
@@ -60,12 +61,32 @@ public class Controller implements Initializable{
         }
         this.list.addAll(this.data.keySet());
         this.listView.setItems(this.list);
+
+        filteredList = new FilteredList<>(list,e ->true);
+        textField.setOnKeyPressed(e -> textField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate((Predicate<? super String>) list->{
+            if(newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+            String lowerFilter = newValue.toLowerCase();
+            int n = lowerFilter.length();
+            int m = list.length();
+            if (m >= n) {
+                String s = list.substring(0, n).toLowerCase();
+                if (lowerFilter.contentEquals(s)) {
+                    return true;
+                }
+            }
+            return false;
+        })));
+
+        this.listView.setItems(filteredList);
+
     }
 
     public void readData() throws IOException {
         fr = new FileReader(fileEV_name);
         br = new BufferedReader(fr);
-        String line = "";
+        String line ;
         while ((line = br.readLine()) != null) {
             String[] word = line.split("<html>");
             Word addword = new Word(word[0],word[1]);
@@ -104,9 +125,7 @@ public class Controller implements Initializable{
         Node add = dialog.getDialogPane().lookupButton(addButton);
         add.setDisable(true);
 
-        newWord.textProperty().addListener((observable, oldValue, newValue) -> {
-            add.setDisable(newValue.trim().isEmpty());
-        });
+        newWord.textProperty().addListener((observable, oldValue, newValue) -> add.setDisable(newValue.trim().isEmpty()));
 
         dialog.getDialogPane().setContent(grid);
 
@@ -169,12 +188,7 @@ public class Controller implements Initializable{
         webView.setPrefHeight(245);
         webView.setMinHeight(220);
 
-        showHTMLButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                webView.getEngine().loadContent(htmlEditor.getHtmlText(),"text/html");
-            }
-        });
+        showHTMLButton.setOnAction(event1 -> webView.getEngine().loadContent(htmlEditor.getHtmlText(),"text/html"));
 
         VBox root = new VBox();
         root.setPadding(new Insets(10,10,10,10));
@@ -200,12 +214,11 @@ public class Controller implements Initializable{
 
     public void actUpdate(ActionEvent event) throws IOException {
         if (check) {
-            fw = new FileWriter("D:\\Code big project\\DicitonaryWithFX\\src\\E_V.txt");
-            bw = new BufferedWriter(fw);
+            fw = new FileWriter(fileEV_name);
         } else {
-            fw = new FileWriter("D:\\Code big project\\DicitonaryWithFX\\src\\V_E.txt");
-            bw = new BufferedWriter(fw);
+            fw = new FileWriter(fileVE_name);
         }
+        bw = new BufferedWriter(fw);
         //add tat ca cac tu vao file
         for (Map.Entry<String,Word> entry : data.entrySet()) {
             bw.write(entry.getKey() + "<html>" + entry.getValue().getWord_explain());
@@ -251,26 +264,23 @@ public class Controller implements Initializable{
         grid.add(webDefinition,1,3);
         grid.add(searchButton,2,2);
 
-        searchButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String text = newWord.getText();
-                if (E_VButton.isSelected()) {
-                    try {
-                        webDefinition.getEngine().loadContent(translate("en", "vi", text));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        searchButton.setOnAction(event1 -> {
+            String text = newWord.getText();
+            if (E_VButton.isSelected()) {
+                try {
+                    webDefinition.getEngine().loadContent(translate("en", "vi", text));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    try {
-                        webDefinition.getEngine().loadContent(translate("vi", "en", text));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
             }
+            else {
+                try {
+                    webDefinition.getEngine().loadContent(translate("vi", "en", text));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
 
         dialog.getDialogPane().setContent(grid);
@@ -296,13 +306,14 @@ public class Controller implements Initializable{
         return response.toString();
     }
     public void changeVE(ActionEvent event) throws IOException {
-        check = false;
-        this.definitionView.getEngine().loadContent("");
         this.data.clear();
         this.list.clear();
+        //this.filteredList.clear();
+        check = false;
+        this.definitionView.getEngine().loadContent("");
         fr = new FileReader(fileVE_name);
         br = new BufferedReader(fr);
-        String line = "";
+        String line ;
         while ((line = br.readLine()) != null) {
             String[] word = line.split("<html>");
             Word addword = new Word(word[0],word[1]);
@@ -310,17 +321,21 @@ public class Controller implements Initializable{
         }
         br.close();
         this.list.addAll(this.data.keySet());
-        this.listView.setItems(this.list);
+        //this.filteredList = new FilteredList<>(list,e ->true);
+        //this.listView.setItems(this.list);
     }
 
     public void changeEV(ActionEvent event) throws IOException {
-        check = true;
+        this.listView.getSelectionModel().clearSelection();
         this.definitionView.getEngine().loadContent("");
+        check = true;
         this.data.clear();
         this.list.clear();
+        //this.filteredList.clear();
         readData();
         this.list.addAll(this.data.keySet());
-        this.listView.setItems(this.list);
+        //this.listView.setItems(this.list);
+        //this.filteredList = new FilteredList<>(list,e ->true);
     }
 
 }

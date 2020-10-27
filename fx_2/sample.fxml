@@ -27,7 +27,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <Menu fx:id="ChooseDic" mnemonicParsing="false" text="Select Dictionary">
+                        <Menu mnemonicParsing="false" text="Select Dictionary">
                             <items>
                                 <RadioMenuItem mnemonicParsing="false" onAction="#changeEV" selected="true" text="E - V Dictionary">
                                     <toggleGroup>
@@ -37,7 +37,7 @@
                                 <RadioMenuItem mnemonicParsing="false" onAction="#changeVE" text="V - E Dictionary" toggleGroup="$TypeTrans" />
                             </items>
                         </Menu>
-                        <MenuItem fx:id="Exit" mnemonicParsing="false" onAction="#closeApp" text="Quit">
+                        <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Quit">
                             <accelerator>
                                 <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
